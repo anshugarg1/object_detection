@@ -1,8 +1,18 @@
 # Data
-/data/
+*.jpg
+*.txt
+*.json
+*.xml
+*.cache
+*.xsl
+data.yaml
+# /data/
 
 # Mac OS-specific storage files
 .DS_Store
+
+#models
+*.pt
 
 # vim
 *.swp
