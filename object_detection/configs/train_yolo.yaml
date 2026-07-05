@@ -1,0 +1,7 @@
+# configs/train_yolo.yaml
+arch: yolo11m.pt
+epochs: 100
+imgsz: 640
+batch: 8
+patience: 30
+device: 0

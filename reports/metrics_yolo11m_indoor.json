@@ -1,0 +1,30 @@
+{
+  "val": {
+    "split": "val",
+    "mAP50": 0.9877,
+    "mAP50-95": 0.8237,
+    "per_class_mAP50-95": {
+      "chair": 0.8753,
+      "clock": 0.8879,
+      "exit": 0.8601,
+      "fireextinguisher": 0.8629,
+      "printer": 0.7408,
+      "screen": 0.8418,
+      "trashbin": 0.6973
+    }
+  },
+  "test": {
+    "split": "test",
+    "mAP50": 0.9931,
+    "mAP50-95": 0.8678,
+    "per_class_mAP50-95": {
+      "chair": 0.8817,
+      "clock": 0.8297,
+      "exit": 0.8374,
+      "fireextinguisher": 0.8439,
+      "printer": 0.8781,
+      "screen": 0.9145,
+      "trashbin": 0.889
+    }
+  }
+}
