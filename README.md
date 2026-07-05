@@ -6,15 +6,17 @@
 
 Object detection for indoor objects
 
-Dataset: https://zenodo.org/records/2654485#.YaYShVPMJhE
-Model: YOLO11
-Results: /reports/yolo_runs/  # train: yolo11m_indoor, val: yolo11m_indoor_val, test: yolo11m_indoor_test
+<b>Dataset</b>: https://zenodo.org/records/2654485#.YaYShVPMJhE
 
-Metrics has been recorded in the file: reports/metrics_table.md. 
+<b>Model:</b> YOLO11
 
-Best and worst examples are stored in: reports/figures
+<b>Results:</b> /reports/yolo_runs/  # train: yolo11m_indoor, val: yolo11m_indoor_val, test: yolo11m_indoor_test
 
-Note: the dataset has been converted to YOLO and COCO format, with the idea to train YOLO11 model and RT-DETR model. Given the time contraint results are recorded from YOLO11 model only.
+<b>Metrics</b> has been recorded in the file: reports/metrics_table.md. 
+
+<b>Best and worst examples</b> are stored in: reports/figures
+
+<b>Note:</b> the dataset has been converted to YOLO and COCO format, with the idea to train YOLO11 model and RT-DETR model. Given the time contraint results are recorded from YOLO11 model only.
 
 ## Project Organization
 
