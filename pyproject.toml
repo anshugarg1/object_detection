@@ -19,9 +19,9 @@ dependencies = [
     "ipykernel>=7.3.0",
     "iterative-stratification>=0.1.9",
     "loguru",
-    "matplotlib>=3.10.9",
+    "matplotlib>=3.7",
     "mkdocs",
-    "numpy>=2.2.6",
+    "numpy>=1.26",
     "pip",
     "python-dotenv",
     "ruff",
@@ -33,7 +33,6 @@ dependencies = [
     "ultralytics>=8.4.87",
 ]
 requires-python = ">=3.10.0"
-
 
 [tool.ruff]
 line-length = 99
