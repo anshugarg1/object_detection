@@ -13,8 +13,8 @@ logger.info(f"PROJ_ROOT path is: {PROJ_ROOT}")
 
 DATA_DIR = PROJ_ROOT / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"
-RAW_DATA_ANNO_DIR = RAW_DATA_DIR / "Indoor_Object_Detection_Dataset/Indoor_Object_Detection_Dataset/annotation"
-RAW_DATA_IMG_DIR = RAW_DATA_DIR / "Indoor_Object_Detection_Dataset/Indoor_Object_Detection_Dataset"
+RAW_DATA_ANNO_DIR = RAW_DATA_DIR / "Indoor_Object_Detection_Dataset/annotation"
+RAW_DATA_IMG_DIR = RAW_DATA_DIR / "Indoor_Object_Detection_Dataset"
 INTERIM_DATA_DIR = DATA_DIR / "interim"
 PROCESSED_DATA_DIR = DATA_DIR / "processed"
 EXTERNAL_DATA_DIR = DATA_DIR / "external"
