@@ -102,7 +102,7 @@ per-image TP / (TP + FP + FN):
 </table>
 Full sets (4 best + 4 worst, plus raw confusion matrices) are in
 reports/figures/val_examples/. The test-split equivalents — confusion
-matrix, PR curve, and best/worst examples — are in
+matrix, and best/worst examples — are in
 reports/yolo_runs/yolo11m_indoor_test/ and reports/figures/test_examples/.
 
 ## Error analysis
