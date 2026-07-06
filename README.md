@@ -9,6 +9,12 @@ from the raw dlib annotations through to evaluation and error analysis.
 - **Reproduce in Colab:** `notebooks/colab_submission.ipynb` — clone, install, download data, train, evaluate, visualize
 - **Results:** `reports/metrics_table.md` · trained weights in `models/` · good/bad examples in `reports/figures/`
 
+
+## Reproduce
+
+**Colab (recommended):** open `notebooks/colab_submission.ipynb` and Run all.
+
+
 ## Pipeline
 
 ```
@@ -98,10 +104,6 @@ Full sets (4 best + 4 worst, plus raw confusion matrices) are in
 reports/figures/val_examples/. The test-split equivalents — confusion
 matrix, PR curve, and best/worst examples — are in
 reports/yolo_runs/yolo11m_indoor_test/ and reports/figures/test_examples/.
-
-## Reproduce
-
-**Colab (recommended):** open `notebooks/colab_submission.ipynb` and Run all.
 
 ## Error analysis
 
