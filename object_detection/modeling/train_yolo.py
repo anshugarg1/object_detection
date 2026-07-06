@@ -17,16 +17,13 @@ def resolve_device(requested_device):
         return "cpu"
     
     if not torch.cuda.is_available():
-        raise RuntimeError(
-            "CUDA is not available"
-        )
+            print("CUDA is not available")
     try: 
         t = torch.randn(64, 64, device="cuda")
         _ = t@t
     except:
-        raise RuntimeError(
-            "CUDA is available but Pytorch is not building."
-        )
+        print("CUDA is available but Pytorch is not building.")
+        
     print(torch.cuda.get_device_capability(0))
     print(torch.cuda.get_device_properties(0))
 

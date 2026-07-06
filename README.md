@@ -18,6 +18,9 @@ Object detection for indoor objects
 
 <b>Note:</b> the dataset has been converted to YOLO and COCO format, with the idea to train YOLO11 model and RT-DETR model. Given the time contraint results are recorded from YOLO11 model only.
 
+Reference: For folder structure cookiecutter is used: https://github.com/drivendataorg/cookiecutter-data-science
+
+
 ## Project Organization
 
 ```
