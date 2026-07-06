@@ -83,12 +83,15 @@ per-image TP / (TP + FP + FN):
 
 <table>
 <tr>
-<td><img src="reports/figures/val_examples/good_1_score1.00_frame_s6_92.jpg" width="100%"><br><sub>Best — score 1.00</sub></td>
-<td><img src="reports/figures/val_examples/good_2_score1.00_frame_s6_82.jpg" width="100%"><br><sub>Best — score 1.00</sub></td>
+<td><img src="reports/figures/val_examples/good 1 clock-exit score 1.00 tp 2 fp 0 fn 0 frame_s6_92.jpg" width="100%"><br><sub>Best — score 1.00<br>clock, exit score 1.00 tp 2 fp 0 fn 0</sub></td>
+<td><img src="reports/figures/val_examples/good 2 clock-exit-fireextinguisher score 1.00 tp 4 fp 0 fn 0 frame_s6_82.jpg" width="100%"><br><sub>Best — score 1.00<br>clock, exit, fireextinguisher score 1.00 tp 4 fp 0 fn 0</sub></td>
 </tr>
 <tr>
-<td><img src="reports/figures/val_examples/bad_1_score0.25_frame_s3_370.jpg" width="100%"><br><sub>Worst — score 0.25</sub></td>
-<td><img src="reports/figures/val_examples/bad_2_score0.33_frame_s3_662.jpg" width="100%"><br><sub>Worst — score 0.33</sub></td>
+<td><img src="reports/figures/val_examples/bad 1 chair score 0.25 tp 1 fp 3 fn 0 frame_s3_370.jpg" width="100%"><br><sub>Worst — score 0.25<br>chair score 0.25 tp 1 fp 3 fn 0</sub></td>
+<td><img src="reports/figures/val_examples/bad 2 chair-screen score 0.33 tp 1 fp 1 fn 1 frame_s3_662.jpg" width="100%"><br><sub>Worst — score 0.33<br>chair, screen score 0.33 tp 1 fp 1 fn 1</sub></td>
+</tr>
+<tr>
+<td><img src="reports/figures/test_examples/bad 1 trashbin score 0.00 tp 0 fp 1 fn 0 frame_s2_18.jpg" width="100%"><br><sub>Worst — score 0.25<br>trashbin score 0.00 tp 0 fp 1 fn 0</sub></td>
 </tr>
 </table>
 Full sets (4 best + 4 worst, plus raw confusion matrices) are in
@@ -114,29 +117,6 @@ in frame-by-frame video labelling. The practical consequence: the reported mAP
 is effectively a **lower bound**, the model is penalised for finding real
 objects the annotators skipped, and this hits the rare classes (trashbin,
 printer) hardest, since each unlabelled instance moves their AP the most.
-
-**2. The selection metric has a blind spot.** Because a correct-but-unlabelled
-detection scores 0, the "worst examples" are not the same as "the model's
-biggest mistakes." A per-image score at a single IoU/confidence threshold cannot
-distinguish a hallucination from a missing label — both register as false
-positives. The good/bad panels are therefore best read as "images the metric
-scores high/low," and any low-scoring frame should be checked against its label
-file before being called a model error.
-
-**3. Performance is strongly sequence-dependent.** Every one of the eight
-best-scoring frames — across both val and test — comes from **sequence 6**
-(`s6_55, s6_64, s6_69, s6_70, s6_78, s6_82, s6_92, s6_99`), while every
-worst-scoring frame comes from a *different* sequence (1, 2, 3, 4). The model is
-near-perfect on sequence-6 scenes and does its worst everywhere else. This is a
-direct symptom of the frame-level split (see Limitations): sequence 6 is
-well-represented in training, so its held-out frames are near-duplicates of data
-the model already saw, whereas other sequences generalise less well. It is the
-clearest visual evidence that the headline mAP is optimistic, and the strongest
-argument for the sequence-grouped evaluation listed under next steps.
-
-Beyond these, most low-scoring frames are wide corridor shots with small,
-distant, or partially occluded objects — the hardest regime for detection and
-the natural next target for improvement.
 
 *To reproduce the label-gap check: after running the pipeline, open the YOLO
 label file for a zero-scoring frame, e.g.
