@@ -100,6 +100,49 @@ reports/yolo_runs/yolo11m_indoor_test/ and reports/figures/test_examples/.
 
 **Colab (recommended):** open `notebooks/colab_submission.ipynb` and Run all.
 
+## Error analysis
+
+Ranking every validation/test image by TP / (TP + FP + FN) surfaces not only
+where the model fails, but where the *labels* do. Three patterns stand out.
+
+**1. Some "failures" are missing labels, not model errors.** Among the
+lowest-scoring test frames, `frame_s2_18` shows the model correctly boxing a
+trash bin (`trashbin 0.67`) that is a trash bin, but the frame carries
+no ground-truth annotation for it, so the detection is counted as a false
+positive and the image scores 0.00. This is annotation sparsity, which is common
+in frame-by-frame video labelling. The practical consequence: the reported mAP
+is effectively a **lower bound**, the model is penalised for finding real
+objects the annotators skipped, and this hits the rare classes (trashbin,
+printer) hardest, since each unlabelled instance moves their AP the most.
+
+**2. The selection metric has a blind spot.** Because a correct-but-unlabelled
+detection scores 0, the "worst examples" are not the same as "the model's
+biggest mistakes." A per-image score at a single IoU/confidence threshold cannot
+distinguish a hallucination from a missing label — both register as false
+positives. The good/bad panels are therefore best read as "images the metric
+scores high/low," and any low-scoring frame should be checked against its label
+file before being called a model error.
+
+**3. Performance is strongly sequence-dependent.** Every one of the eight
+best-scoring frames — across both val and test — comes from **sequence 6**
+(`s6_55, s6_64, s6_69, s6_70, s6_78, s6_82, s6_92, s6_99`), while every
+worst-scoring frame comes from a *different* sequence (1, 2, 3, 4). The model is
+near-perfect on sequence-6 scenes and does its worst everywhere else. This is a
+direct symptom of the frame-level split (see Limitations): sequence 6 is
+well-represented in training, so its held-out frames are near-duplicates of data
+the model already saw, whereas other sequences generalise less well. It is the
+clearest visual evidence that the headline mAP is optimistic, and the strongest
+argument for the sequence-grouped evaluation listed under next steps.
+
+Beyond these, most low-scoring frames are wide corridor shots with small,
+distant, or partially occluded objects — the hardest regime for detection and
+the natural next target for improvement.
+
+*To reproduce the label-gap check: after running the pipeline, open the YOLO
+label file for a zero-scoring frame, e.g.
+`data/processed/yolo/labels/test/frame_s2_18.txt`; an empty file or one with no
+trashbin row confirms the missing annotation.*
+
 ## Limitations & next steps
 
 - **Leakage-aware evaluation (planned):** the six sequences are video, so
