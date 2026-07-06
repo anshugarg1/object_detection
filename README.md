@@ -96,14 +96,19 @@ per-image TP / (TP + FP + FN):
 <td><img src="reports/figures/val_examples/bad 1 chair score 0.25 tp 1 fp 3 fn 0 frame_s3_370.jpg" width="100%"><br><sub>Worst — score 0.25<br>chair tp 1 fp 3 fn 0</sub></td>
 <td><img src="reports/figures/val_examples/bad 2 chair-screen score 0.33 tp 1 fp 1 fn 1 frame_s3_662.jpg" width="100%"><br><sub>Worst — score 0.33<br>chair, screen tp 1 fp 1 fn 1</sub></td>
 </tr>
+</table>
+Full sets (4 best + 4 worst, plus raw confusion matrices) are in
+reports/figures/val_examples/. 
+
+
+The test-split equivalents — confusion
+matrix, PR curves, and best/worst examples etc are in
+reports/yolo_runs/yolo11m_indoor_test/ and reports/figures/test_examples/. An image worth noting: missing annotation but model detects it.
+<table>
 <tr>
 <td><img src="reports/figures/test_examples/bad 1 trashbin score 0.00 tp 0 fp 1 fn 0 frame_s2_18.jpg" width="100%"><br><sub>Worst — score 0.00<br>trashbin tp 0 fp 1 fn 0</sub></td>
 </tr>
 </table>
-Full sets (4 best + 4 worst, plus raw confusion matrices) are in
-reports/figures/val_examples/. The test-split equivalents — confusion
-matrix, PR curves, and best/worst examples etc are in
-reports/yolo_runs/yolo11m_indoor_test/ and reports/figures/test_examples/.
 
 ## Error analysis
 
