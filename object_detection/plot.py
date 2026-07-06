@@ -35,7 +35,7 @@ def _load_gt(label_path: Path, w: int, h: int):
 
 def _image_score(pred_xyxy, pred_cls, gt_xyxy, gt_cls, iou_thr=0.5) -> float:
     """Per-image detection quality = TP / (TP + FP + FN) via greedy class-aware IoU match."""
-    tp, matched = 0, set()
+    tp, matched, matched_pred  = 0, set(), set()
     for i in range(len(pred_xyxy)):
         best_iou, best_j = 0.0, -1
         for j in range(len(gt_xyxy)):
@@ -45,11 +45,24 @@ def _image_score(pred_xyxy, pred_cls, gt_xyxy, gt_cls, iou_thr=0.5) -> float:
             if iou > best_iou:
                 best_iou, best_j = iou, j
         if best_iou >= iou_thr and best_j >= 0:
-            tp += 1; matched.add(best_j)
+            tp += 1
+            matched.add(best_j)
+            matched_pred.add(i)
     fp = len(pred_xyxy) - tp
     fn = len(gt_xyxy) - len(matched)
     denom = tp + fp + fn
-    return 1.0 if denom == 0 else tp / denom
+    score = 1.0 if denom == 0 else tp / denom
+    err_cls = ([int(pred_cls[i]) for i in range(len(pred_cls)) if i not in matched_pred]  
+               + [int(gt_cls[j]) for j in range(len(gt_cls)) if j not in matched])         
+    return score, {"tp": tp, "fp": fp, "fn": fn, "err_cls": err_cls}                       
+
+
+def _cls_tag(stats, gt_cls, p_cls, names) -> str:
+    """Classes the model got wrong on this image (FP + FN); for a perfect image,
+    the classes actually present. Used to label the output filename."""
+    ids = stats["err_cls"] or list(gt_cls) or list(p_cls)
+    uniq = sorted({names[int(c)] for c in ids})
+    return "-".join(uniq) if uniq else "none"
 
 
 def _render(img_path, pred, gt_xyxy, gt_cls, names) -> np.ndarray:
@@ -90,8 +103,9 @@ def show_best_worst(split: str, k: int = 4, weights: Path = None, conf: float = 
         gt_xyxy, gt_cls = _load_gt(labels_dir / f"{img_path.stem}.txt", w, h)
         p_xyxy = pred.boxes.xyxy.cpu().numpy() if len(pred.boxes) else np.zeros((0, 4))
         p_cls = pred.boxes.cls.cpu().numpy().astype(int) if len(pred.boxes) else np.zeros((0,), int)
-        score = _image_score(p_xyxy, p_cls, gt_xyxy, gt_cls)
-        scored.append((score, img_path, pred, gt_xyxy, gt_cls))
+        score, stats = _image_score(p_xyxy, p_cls, gt_xyxy, gt_cls)
+        cls_tag = _cls_tag(stats, gt_cls, p_cls, names)
+        scored.append((score, cls_tag, stats, img_path, pred, gt_xyxy, gt_cls))
 
     scored.sort(key=lambda x: x[0])
     worst = scored[:k]
@@ -100,9 +114,12 @@ def show_best_worst(split: str, k: int = 4, weights: Path = None, conf: float = 
     out_dir = FIGURES_DIR / f"{split}_examples"
     out_dir.mkdir(parents=True, exist_ok=True)
     for tag, group in (("good", best), ("bad", worst)):
-        for rank, (score, img_path, pred, gt_xyxy, gt_cls) in enumerate(group, 1):
+        for rank, (score, cls_tag, stats, img_path, pred, gt_xyxy, gt_cls) in enumerate(group, 1):
             img = _render(img_path, pred, gt_xyxy, gt_cls, names)
-            dst = out_dir / f"{tag}_{rank}_score{score:.2f}_{img_path.stem}.jpg"
+            dst = out_dir / (
+                f"{tag} {rank} {cls_tag} score {score:.2f}"
+                f" tp {stats['tp']} fp {stats['fp']} fn {stats['fn']} {img_path.stem}.jpg"
+            )
             cv2.imwrite(str(dst), img)
     return out_dir
 
