@@ -68,7 +68,33 @@ in train, val, and test as required.
 Reading: the lowest-AP classes (printer, trashbin) are exactly the rarest, and
 their per-class AP swings widely between val and test — expected, since each
 holds only ~8–20 boxes per split, so a single miss moves the number a lot.
-These per-class figures should be read as noisy, not precise.
+
+Result visualizations (validation split)
+
+Confusion matrix (row-normalized). Strong diagonal across all seven classes;
+the main off-diagonal mass is the background column — i.e. missed detections and
+spurious boxes — and it is heaviest for the rare classes (printer, trashbin),
+consistent with their lower AP.
+
+<img src="reports/yolo_runs/yolo11m_indoor_val/confusion_matrix_normalized.png" width="520">
+
+Best / worst examples (green = prediction, red = ground truth), ranked by
+per-image TP / (TP + FP + FN):
+
+<table>
+<tr>
+<td><img src="reports/figures/val_examples/good_1_score1.00_frame_s6_92.jpg" width="100%"><br><sub>Best — score 1.00</sub></td>
+<td><img src="reports/figures/val_examples/good_2_score1.00_frame_s6_82.jpg" width="100%"><br><sub>Best — score 1.00</sub></td>
+</tr>
+<tr>
+<td><img src="reports/figures/val_examples/bad_1_score0.25_frame_s3_370.jpg" width="100%"><br><sub>Worst — score 0.25</sub></td>
+<td><img src="reports/figures/val_examples/bad_2_score0.33_frame_s3_662.jpg" width="100%"><br><sub>Worst — score 0.33</sub></td>
+</tr>
+</table>
+Full sets (4 best + 4 worst, plus raw confusion matrices) are in
+reports/figures/val_examples/. The test-split equivalents — confusion
+matrix, PR curve, and best/worst examples — are in
+reports/yolo_runs/yolo11m_indoor_test/ and reports/figures/test_examples/.
 
 ## Reproduce
 
